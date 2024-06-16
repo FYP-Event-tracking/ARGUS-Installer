@@ -67,7 +67,7 @@
 
         start "" "Track and Count System/WebSocket/TCS_WebSocket.bat"
 
-9. Add `setup.iss` file to root directory and compile it using inno setup compiler.
+11. Add `setup.iss` file to root directory and compile it using inno setup compiler.
 
         [Setup]
         AppName=Project Argus
@@ -87,9 +87,11 @@
         [Icons]
         Name: "{group}\Project Argus"; Filename: "{app}\Project Argus.bat"
 
-10. It will create `output` folder and it include `Project Argus Installer.exe`.
+12. It will create `output` folder and it include `Project Argus Installer.exe`.
 
-11. Insall the setup and run `Project Argus.bat`.
+13. Install `Python 3.11.5` in target machine.
+
+13. Install the setup and run `Project Argus.bat`.
 
 ## Backend
 

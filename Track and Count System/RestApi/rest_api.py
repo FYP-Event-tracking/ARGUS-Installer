@@ -33,8 +33,8 @@ def model_run(SOURCE_VIDEO_PATH, TARGET_VIDEO_PATH):
     model = YOLO(os.path.relpath("best.pt"))
     model.fuse()
 
-    LINE_START = sv.Point(1000, 1000)
-    LINE_END = sv.Point(1500, 200)
+    LINE_START = sv.Point(150, 1000)
+    LINE_END = sv.Point(1100, 100)
 
     line_counter = sv.LineZone(start=LINE_START, end=LINE_END)
 
@@ -82,12 +82,16 @@ def model_run(SOURCE_VIDEO_PATH, TARGET_VIDEO_PATH):
             in_count = line_counter.in_count
             out_count = line_counter.out_count
             sink.write_frame(frame)
+            time = datetime.datetime.now().isoformat()
+            time_dt = datetime.datetime.fromisoformat(time)
+            time_str = time_dt.strftime("%Y-%m-%d %H:%M:%S")
 
-            logs.append(f"{datetime.datetime.now().isoformat()} {in_count} {out_count} {labels}")
+            log = f"{time_str}    Current-Count: {in_count}  ->  {labels}"
+            logs.append(log + "\n")
 
     return in_count, out_count
 
-def send_data_to_backend():
+def send_data_to_backend(in_count):
     global log_id, box_id, item_type, user_id, start_time, logs
     logs_str = " ".join(logs)
 
@@ -98,7 +102,7 @@ def send_data_to_backend():
         "boxId": box_id,
         "itemType": item_type,
         "userId": user_id,
-        "totalCount": 0,
+        "totalCount": in_count,
         "startTime": start_time,
         "endTime": end_time,
         "fullLogFile": logs_str
@@ -137,9 +141,9 @@ def upload_file():
         filename = file.filename
         file.save(os.path.join(UPLOAD_FOLDER, filename))
         source_video_path = os.path.join(UPLOAD_FOLDER, filename)
-        target_video_path = os.path.join(UPLOAD_FOLDER, f"{filename}.output.mp4")
+        target_video_path = os.path.join(UPLOAD_FOLDER, f"{log_id}.mp4")
         in_count, out_count = model_run(source_video_path, target_video_path)
-        send_data_to_backend()
+        send_data_to_backend(in_count)
         return jsonify({'message': 'File successfully processed'}), 200
     else:
         print('Invalid file type')

@@ -8,7 +8,7 @@
 
 4. Copy `web_socket.py` file, `best.pt` model and `requirements.txt` from `Track and count system/WebSocket` and paste them to `Track and Count System/WebSocket` folder in installer.
 
-5. Change endpoints `host.docker.internal` in `.py` to `localhost`.
+5. 3. Copy `rest_api.py` file, `best.pt` model and `requirements.txt` from `Track and count system/RestApi_continue` and paste them to `Track and Count System/RestApi_continue` folder in installer.
 
 6. From `Track and Count System/RestApi` directory run,
 
@@ -27,9 +27,6 @@
 
         REM Run the Python script
         python rest_api.py
-
-        REM Deactivate the virtual environment
-        deactivate
 
         REM Pause the command prompt so you can see any output before it closes
         pause
@@ -52,13 +49,31 @@
         REM Run the Python script
         python web_socket.py
 
-        REM Deactivate the virtual environment
-        deactivate
+        REM Pause the command prompt so you can see any output before it closes
+        pause
+
+10. From `Track and Count System/RestApi_continue` directory run,
+
+- `python -m venv venv`
+- `venv\Scripts\activate`
+- `pip install -r requirements.txt`
+
+11. Create `TCS_RestApi_continue.bat` file.
+
+        @echo off
+        REM Change directory to where your virtual environment and app.py are located
+        cd %~dp0
+
+        REM Activate the virtual environment
+        call venv\Scripts\activate
+
+        REM Run the Python script
+        python rest_api.py
 
         REM Pause the command prompt so you can see any output before it closes
         pause
 
-10. Add `Project Argus.bat` file to root directory.
+12. Add `Project Argus.bat` file to root directory.
 
         @echo off
         start "" "Frontend/ProjectArgus.jar"
@@ -66,6 +81,8 @@
         start "" "Track and Count System/RestApi/TCS_RestApi.bat"
 
         start "" "Track and Count System/WebSocket/TCS_WebSocket.bat"
+
+        start "" "Track and Count System/WebSocket/TCS_RestApi_continue.bat"
 
 11. Add `setup.iss` file to root directory and compile it using inno setup compiler.
 
